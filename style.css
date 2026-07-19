@@ -617,6 +617,10 @@ ul {
     gap: 2.5rem;
   }
   
+  .footer-brand .logo {
+    justify-content: center;
+  }
+  
   .social-buttons {
     justify-content: center;
   }
