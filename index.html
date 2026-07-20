@@ -19,14 +19,14 @@
   <nav class="navbar">
     <div class="nav-container">
       <div class="logo">
-        <span class="logo-text">Hi Lash</span>
+        <span class="logo-text">Lashed</span>
       </div>
       <ul class="nav-links">
         <li><a href="#services">Услуги</a></li>
         <li><a href="#gallery">Галерея</a></li>
         <li><a href="#contacts">Контакты</a></li>
       </ul>
-      <a href="#booking" class="btn btn-primary">Записаться онлайн</a>
+      <a href="#booking" class="btn btn-primary">ЗАПИСАТЬСЯ</a>
     </div>
   </nav>
 
@@ -34,27 +34,25 @@
   <header class="hero">
     <div class="hero-floating-elements">
       <div class="parallax-layer" data-speed="0.15">
-        <img src="/images/nail_polish.png" alt="Nail Polish" class="floating-icon icon-1" />
+        <img src="/images/hero_ice_cube.png" alt="Ice Cube" class="floating-icon icon-ice" />
       </div>
       <div class="parallax-layer" data-speed="0.25">
-        <img src="/images/mascara.png" alt="Mascara" class="floating-icon icon-2" />
-      </div>
-      <div class="parallax-layer" data-speed="0.1">
-        <img src="/images/tweezers.png" alt="Tweezers" class="floating-icon icon-3" />
+        <img src="/images/hero_nail_polish.png" alt="Nail Polish" class="floating-icon icon-polish" />
       </div>
     </div>
     <div class="hero-content fade-in-up">
-      <h1>Hi Lash</h1>
-      <p class="hero-subtitle">Премиальный сервис. Безупречный результат.</p>
-      <p class="hero-hours">Режим работы: 10:00 - 21:00</p>
-      <a href="#booking" class="btn btn-primary btn-large">Записаться онлайн</a>
+      <h1 class="hero-title">Lashed</h1>
+      <div class="hero-subcontent">
+        <p class="hero-hours-pill">Режим работы: 10:00 - 21:00</p>
+        <a href="#booking" class="hero-book-btn">ЗАПИСАТЬСЯ</a>
+      </div>
     </div>
   </header>
 
   <!-- Services & Price List -->
   <section id="services" class="services section">
     <div class="container">
-      <h2 class="section-title">Услуги и Цены</h2>
+      <h2 class="section-title">УСЛУГИ</h2>
       <div class="services-grid">
 
         <div class="service-category">
@@ -164,22 +162,37 @@
         <button id="btn-show-more-all" class="btn-show-more">Показать еще</button>
       </div>
       <div class="services-cta">
-        <a href="#booking" class="btn btn-primary btn-large">Записаться онлайн</a>
+        <a href="#booking" class="btn btn-primary btn-large">ЗАПИСАТЬСЯ</a>
       </div>
     </div>
   </section>
 
   <!-- Gallery Section -->
   <section id="gallery" class="gallery section">
-    <div class="container">
-      <h2 class="section-title">Галерея</h2>
-      <div class="gallery-grid">
-        <div class="gallery-item"><img src="/images/manicure1.jpeg" alt="Clean nude manicure" /></div>
-        <div class="gallery-item"><img src="/images/brows2.png" alt="Precise brow symmetry" /></div>
-        <div class="gallery-item"><img src="/images/interior1.jpeg" alt="Studio interior" /></div>
-        <div class="gallery-item"><img src="/images/interior2.jpg" alt="Studio details" /></div>
-        <div class="gallery-item"><img src="/images/nails.jpeg" alt="Beautiful nails" /></div>
-        <div class="gallery-item"><img src="/images/brows1.jpeg" alt="Perfect brows" /></div>
+    <div class="container gallery-container">
+      <h2 class="section-title">ГАЛЕРЕЯ</h2>
+
+      <div class="gallery-slider-wrapper">
+        <div class="gallery-controls-left">
+          <button class="gallery-nav-btn nav-prev" id="gallery-prev" aria-label="Предыдущее фото">↑</button>
+          <div class="gallery-progress-container">
+            <div class="gallery-progress-bar" id="gallery-progress"></div>
+          </div>
+          <button class="gallery-nav-btn nav-next" id="gallery-next" aria-label="Следующее фото">↓</button>
+        </div>
+
+        <div class="gallery-viewport">
+          <div class="gallery-slider" id="gallery-slider">
+            <div class="gallery-slide"><img src="/images/manicure1.jpeg" alt="Clean nude manicure" /></div>
+            <div class="gallery-slide"><img src="/images/brows2.png" alt="Precise brow symmetry" /></div>
+            <div class="gallery-slide"><img src="/images/interior1.jpeg" alt="Studio interior" /></div>
+            <div class="gallery-slide"><img src="/images/interior2.jpg" alt="Studio details" /></div>
+            <div class="gallery-slide"><img src="/images/nails.jpeg" alt="Beautiful nails" /></div>
+            <div class="gallery-slide"><img src="/images/brows1.jpeg" alt="Perfect brows" /></div>
+          </div>
+        </div>
+
+        <div class="gallery-counter" id="gallery-counter">01 / 06</div>
       </div>
     </div>
   </section>
@@ -189,7 +202,7 @@
     <div class="container footer-container">
       <div class="footer-brand">
         <div class="logo">
-          <span class="logo-text">Hi Lash</span>
+          <span class="logo-text">Lashed</span>
         </div>
         <p>Ваша красота — наше вдохновение.</p>
       </div>
