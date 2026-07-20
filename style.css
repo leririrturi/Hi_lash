@@ -573,9 +573,19 @@ ul {
 .gallery-viewport {
   flex-grow: 1;
   height: 100%;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior-y: contain;
+  scroll-behavior: smooth;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
   position: relative;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.gallery-viewport::-webkit-scrollbar {
+  display: none;
 }
 
 .gallery-slider {
@@ -583,8 +593,6 @@ ul {
   flex-direction: column;
   gap: 0;
   height: 100%;
-  transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
-  will-change: transform;
 }
 
 .gallery-slide {
@@ -593,6 +601,8 @@ ul {
   overflow: hidden;
   margin: 0;
   padding: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 .gallery-slide img {

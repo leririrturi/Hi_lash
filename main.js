@@ -162,141 +162,66 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Gallery slider logic — transform-based (no scroll)
+  // Gallery slider logic — native scroll-snap based
   const gallerySlider = document.getElementById('gallery-slider');
   const galleryProgress = document.getElementById('gallery-progress');
   const galleryPrev = document.getElementById('gallery-prev');
   const galleryNext = document.getElementById('gallery-next');
   const galleryCounter = document.getElementById('gallery-counter');
+  const galleryViewport = document.querySelector('.gallery-viewport');
 
-  if (gallerySlider) {
+  if (gallerySlider && galleryViewport) {
     const slides = gallerySlider.querySelectorAll('.gallery-slide');
     const totalSlides = slides.length;
-    let currentSlide = 0;
 
-    const goToSlide = (index) => {
-      currentSlide = index;
-      const offset = -(currentSlide * 100);
-      gallerySlider.style.transform = `translateY(${offset}%)`;
+    // Get current slide index from scroll position
+    const getCurrentIndex = () => {
+      const viewportH = galleryViewport.clientHeight;
+      if (viewportH === 0) return 0;
+      return Math.min(
+        totalSlides - 1,
+        Math.max(0, Math.round(galleryViewport.scrollTop / viewportH))
+      );
+    };
 
-      // Update progress bar
+    // Update progress bar and counter based on current scroll position
+    const updateUI = () => {
+      const currentIndex = getCurrentIndex();
+
       if (galleryProgress) {
         const progress = totalSlides > 1
-          ? (currentSlide / (totalSlides - 1)) * 100
+          ? (currentIndex / (totalSlides - 1)) * 100
           : 100;
         galleryProgress.style.height = `${progress}%`;
       }
 
-      // Update counter
       if (galleryCounter) {
-        galleryCounter.textContent = `${String(currentSlide + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
+        galleryCounter.textContent = `${String(currentIndex + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
       }
     };
 
+    // Listen to native scroll events on the viewport to update UI
+    galleryViewport.addEventListener('scroll', updateUI, { passive: true });
+
+    // Button navigation — use scrollIntoView for pixel-perfect snap
     if (galleryPrev) {
       galleryPrev.addEventListener('click', () => {
-        const targetIndex = currentSlide === 0 ? totalSlides - 1 : currentSlide - 1;
-        goToSlide(targetIndex);
+        const cur = getCurrentIndex();
+        const target = cur === 0 ? totalSlides - 1 : cur - 1;
+        slides[target].scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     }
 
     if (galleryNext) {
       galleryNext.addEventListener('click', () => {
-        const targetIndex = currentSlide === totalSlides - 1 ? 0 : currentSlide + 1;
-        goToSlide(targetIndex);
+        const cur = getCurrentIndex();
+        const target = cur === totalSlides - 1 ? 0 : cur + 1;
+        slides[target].scrollIntoView({ behavior: 'smooth', block: 'start' });
       });
     }
 
     // Initial state
-    goToSlide(0);
-
-    // --- Wheel and Swipe Support ---
-    const galleryViewport = document.querySelector('.gallery-viewport');
-    if (galleryViewport) {
-      let isAnimating = false;
-      let animationStart = 0;
-      let idleTimer = null;
-      const TRANSITION_MS = 600; // matches CSS transition duration
-      const IDLE_MS = 150;       // time after last wheel event to consider inertia done
-
-      galleryViewport.addEventListener('wheel', (e) => {
-        // On every wheel event (including inertia), reset the idle timer
-        clearTimeout(idleTimer);
-        idleTimer = setTimeout(() => {
-          // No wheel events for IDLE_MS → inertia has stopped
-          const elapsed = Date.now() - animationStart;
-          if (elapsed >= TRANSITION_MS) {
-            isAnimating = false;
-          } else {
-            // Animation still running, wait for it to finish
-            setTimeout(() => { isAnimating = false; }, TRANSITION_MS - elapsed);
-          }
-        }, IDLE_MS);
-
-        // Trap scroll inside gallery when not at boundary
-        if ((e.deltaY > 0 && currentSlide < totalSlides - 1) ||
-            (e.deltaY < 0 && currentSlide > 0)) {
-          e.preventDefault();
-        }
-
-        // If currently animating/in inertia, do nothing else
-        if (isAnimating) return;
-
-        if (e.deltaY > 0 && currentSlide < totalSlides - 1) {
-          isAnimating = true;
-          animationStart = Date.now();
-          goToSlide(currentSlide + 1);
-        } else if (e.deltaY < 0 && currentSlide > 0) {
-          isAnimating = true;
-          animationStart = Date.now();
-          goToSlide(currentSlide - 1);
-        }
-      }, { passive: false });
-
-      // Mobile touch swiping
-      let touchStartY = 0;
-      let touchEndY = 0;
-
-      galleryViewport.addEventListener('touchstart', (e) => {
-        touchStartY = e.changedTouches[0].screenY;
-      }, { passive: true });
-
-      galleryViewport.addEventListener('touchmove', (e) => {
-        if (!touchStartY) return;
-        const currentY = e.changedTouches[0].screenY;
-        const diff = touchStartY - currentY; // positive = swipe up = scroll down
-        
-        if (diff > 0) {
-          // Swiping up (trying to scroll down)
-          if (currentSlide < totalSlides - 1) {
-            e.preventDefault(); // Trap scroll
-          }
-        } else if (diff < 0) {
-          // Swiping down (trying to scroll up)
-          if (currentSlide > 0) {
-            e.preventDefault(); // Trap scroll
-          }
-        }
-      }, { passive: false });
-
-      galleryViewport.addEventListener('touchend', (e) => {
-        touchEndY = e.changedTouches[0].screenY;
-        const swipeThreshold = 40;
-        
-        if (touchStartY - touchEndY > swipeThreshold) {
-          // Swiped up -> next slide
-          if (currentSlide < totalSlides - 1) {
-            goToSlide(currentSlide + 1);
-          }
-        } else if (touchEndY - touchStartY > swipeThreshold) {
-          // Swiped down -> prev slide
-          if (currentSlide > 0) {
-            goToSlide(currentSlide - 1);
-          }
-        }
-        touchStartY = 0;
-      }, { passive: true });
-    }
+    updateUI();
   }
 
   // ── Custom scroll positioning for nav links ──
