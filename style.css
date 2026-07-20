@@ -580,6 +580,8 @@ ul {
   scroll-behavior: smooth;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
   position: relative;
+  border-radius: var(--radius-md);
+  isolation: isolate; /* Ensures Safari clips rounded corners properly on nested scrolling content */
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -603,6 +605,7 @@ ul {
   padding: 0;
   scroll-snap-align: start;
   scroll-snap-stop: always;
+  border-radius: var(--radius-md);
 }
 
 .gallery-slide img {
