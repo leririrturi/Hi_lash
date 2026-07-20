@@ -605,7 +605,6 @@ ul {
   padding: 0;
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  border-radius: var(--radius-md);
 }
 
 .gallery-slide img {
